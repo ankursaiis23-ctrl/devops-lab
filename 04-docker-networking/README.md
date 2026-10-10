@@ -112,6 +112,9 @@ Only `flask` publishes a port (5001). `mysql` and `redis` show only their intern
 
 ![Verify](verify.png)
 
+With Flask also running, `docker network inspect my-bridge-net` lists all three containers (`flask`, `mysql`, `redis`) under `Containers`.
+
+![Inspect all three](inspect-all.png)
 ### 11. Cleanup
 ```
 docker stop mysql redis flask
