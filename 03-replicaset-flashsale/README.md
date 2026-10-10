@@ -93,6 +93,16 @@ kubectl run curl-test --rm -i --restart=Never --image=curlimages/curl --command 
 6. Nodes running: 1
 7. All 5 pods run on the single node `minikube`.
 
+## Docker Hub
+The exercise also asks to publish the image. I tagged and pushed it to Docker Hub as `ankurgit/flashsale:1.0` (https://hub.docker.com/r/ankurgit/flashsale).
+```
+docker login
+docker tag flashsale:1.0 ankurgit/flashsale:1.0
+docker push ankurgit/flashsale:1.0
+```
+![Docker login](docker-login.png)
+![Docker push](docker-push.png)
+![Docker Hub](dockerhub.png)
 ## What I learned
 - A ReplicaSet keeps a fixed number of identical pods running and replaces any that are deleted or fail.
 - Scaling is just changing the desired replica count. Pods are created or removed to match it.
