@@ -90,4 +90,8 @@ Task 4 matches the expected output. Task 5 does not (exit codes 0 and 0 instead 
 5. **Verifying a profile is applied:** `docker inspect` (HostConfig.SecurityOpt), plus a real test such as reading a denied file, or checking /proc/self/attr/current inside the container.
 
 ## What I learned
-(write in your own words)
+- AppArmor is a Linux kernel feature that limits what a process can read, write, execute or use. A Docker container can be given a profile with --security-opt apparmor=<name>, which adds a layer of protection beyond normal container isolation.
+- AppArmor needs kernel support, and installing apparmor-utils only adds the tools. Docker Desktop on Windows runs on the WSL2 kernel, which has none, so the exercise could not run there. Docker even accepted a profile that did not exist, which hides the problem.
+- The profile in the exercise needed fixes. The name must match what Docker is given, it needs a baseline of allowed access, and the parser rejects "rmix" in a deny rule, so I used "x".
+- docker inspect only shows that a profile was requested. To know it is enforced, I had to try a blocked action and check /proc/self/attr/current. Here the kernel blocked /etc/passwd through aa-exec, but Docker in the Codespace ran containers unconfined, so Task 5 gave exit codes 0 and 0 instead of 1 and 126.
+- Checking each layer (kernel, profile, Docker) separately let me find where the problem was instead of guessing.
