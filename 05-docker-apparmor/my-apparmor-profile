@@ -1,0 +1,25 @@
+#include <tunables/global>
+
+profile my-apparmor-profile flags=(attach_disconnected,mediate_deleted) {
+  #include <abstractions/base>
+
+  # Baseline so Python and Flask can run (same idea as Docker's default profile)
+  network,
+  capability,
+  file,
+  umount,
+  signal,
+
+  # Deny access to sensitive system files
+  deny /etc/passwd r,
+  deny /etc/shadow r,
+  deny /var/** rw,
+
+  # Deny executing shells (/bin is a symlink to /usr/bin, so both paths are listed)
+  deny /bin/bash x,
+  deny /usr/bin/bash x,
+  deny /usr/bin/dash x,
+
+  # Capability restrictions
+  deny capability sys_admin,
+}
