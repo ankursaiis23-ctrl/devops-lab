@@ -103,6 +103,55 @@ docker push ankurgit/flashsale:1.0
 ![Docker login](docker-login.png)
 ![Docker push](docker-push.png)
 ![Docker Hub](dockerhub.png)
+## Additional challenges
+
+### Logs and exec
+```
+kubectl logs $pod
+kubectl exec $pod -- hostname
+kubectl exec $pod -- ls /app
+kubectl exec $pod -- python --version
+```
+![Logs](logs.png)
+![Exec](exec.png)
+
+### A different image in the ReplicaSet
+I built `flashsale:2.0` (`app-v2.py` with a "v2" welcome message, built with `Dockerfile.v2`), loaded it into Minikube and pointed the ReplicaSet at it using `flashsale-replicaset-v2.yaml`.
+```
+docker build -f Dockerfile.v2 -t flashsale:2.0 .
+minikube image load flashsale:2.0
+kubectl apply -f flashsale-replicaset-v2.yaml
+```
+![v2 files](v2-files.png)
+![v2 build](v2-build.png)
+
+The running pods stayed on `flashsale:1.0`. A ReplicaSet only uses the new template for pods it creates later, so a deleted pod was replaced by one running `flashsale:2.0`. Applying the YAML also reset the replicas from 5 to 3, because the file says `replicas: 3`.
+
+![ReplicaSet update](rs-update.png)
+![Replacement pod on v2](rs-new-pod.png)
+
+### Deployment instead of a ReplicaSet
+I deleted the ReplicaSet and created a Deployment from `flashsale-deployment.yaml` (same spec, `kind: Deployment`). The Deployment created its own ReplicaSet and pods.
+```
+kubectl apply -f flashsale-deployment.yaml
+kubectl get deployments
+kubectl get rs
+kubectl get pods
+```
+![Deployment](deployment.png)
+
+A rolling update moved all pods to `flashsale:2.0` automatically, one pod at a time. The old ReplicaSet was kept at 0 replicas.
+```
+kubectl set image deployment/flashsale-deploy flashsale-container=flashsale:2.0
+kubectl rollout status deployment/flashsale-deploy
+```
+![Rollout](rollout.png)
+
+A rollback returned the pods to `flashsale:1.0`.
+```
+kubectl rollout undo deployment/flashsale-deploy
+```
+![Rollback](rollback.png)
 ## What I learned
 - A ReplicaSet keeps a fixed number of identical pods running and replaces any that are deleted or fail.
 - Scaling is just changing the desired replica count. Pods are created or removed to match it.
