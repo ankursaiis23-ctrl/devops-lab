@@ -1,0 +1,204 @@
+Started by user Admin
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/jenkins_home/workspace/delivery-monitoring-pipeline
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Pre-check Docker)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
++ docker --version
+[Pipeline] sh
++ docker info
+Client:
+ Version:    26.1.5+dfsg1
+ Context:    default
+ Debug Mode: false
+ Plugins:
+  buildx: Docker Buildx (Docker Inc.)
+    Version:  0.13.1+ds1
+    Path:     /usr/libexec/docker/cli-plugins/docker-buildx
+
+Server:
+ Containers: 9
+  Running: 3
+  Paused: 0
+  Stopped: 6
+ Images: 14
+ Server Version: 29.7.2
+ Storage Driver: overlayfs
+  driver-type: io.containerd.snapshotter.v1
+ Logging Driver: json-file
+ Cgroup Driver: cgroupfs
+ Cgroup Version: 2
+ Plugins:
+  Volume: local
+  Network: bridge host ipvlan macvlan null overlay
+  Log: awslogs fluentd gcplogs gelf journald json-file local splunk syslog
+ CDI spec directories:
+  /etc/cdi
+  /var/run/cdi
+ Swarm: inactive
+ Runtimes: io.containerd.runc.v2 nvidia runc
+ Default Runtime: runc
+ Init Binary: docker-init
+ containerd version: aad11006b869517fcd3009450b6f82da282e1a9b (expected: )
+ runc version: v1.4.3-0-gbb14dabe (expected: )
+ init version: de40ad0 (expected: )
+ Security Options:
+  seccomp
+   Profile: builtin
+  cgroupns
+ Kernel Version: 6.6.87.2-microsoft-standard-WSL2
+ Operating System: Docker Desktop
+ OSType: linux
+ Architecture: x86_64
+ CPUs: 12
+ Total Memory: 7.603GiB
+ Name: docker-desktop
+ ID: e4cecbfb-dc6f-4128-9300-bd940d0e0813
+ Docker Root Dir: /var/lib/docker
+ Debug Mode: false
+ HTTP Proxy: http.docker.internal:3128
+ HTTPS Proxy: http.docker.internal:3128
+ No Proxy: hubproxy.docker.internal
+ Labels:
+  com.docker.desktop.address=npipe://\\.\pipe\docker_cli
+ Experimental: false
+ Insecure Registries:
+  hubproxy.docker.internal:5555
+  ::1/128
+  127.0.0.0/8
+ Live Restore Enabled: false
+
+[Pipeline] echo
+Docker is available and running: Docker version 26.1.5+dfsg1, build a72d7cd
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Setup Workspace)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
++ cp /src/delivery_metrics.py /var/jenkins_home/workspace/delivery-monitoring-pipeline/
++ cp /src/Dockerfile /var/jenkins_home/workspace/delivery-monitoring-pipeline/
++ cp /src/prometheus.yml /var/jenkins_home/workspace/delivery-monitoring-pipeline/
++ cp /src/alert_rules.yml /var/jenkins_home/workspace/delivery-monitoring-pipeline/
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Clean Old Containers)
+[Pipeline] sh
++ docker rm -f delivery_metrics prometheus grafana
+Error response from daemon: No such container: delivery_metrics
+prometheus
+grafana
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build Docker Image)
+[Pipeline] sh
++ docker build -t delivery_metrics .
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 190B 0.1s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim
+#2 DONE 3.8s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 transferring context: 1.52kB done
+#4 DONE 0.0s
+
+#5 [1/4] FROM docker.io/library/python:3.12-slim@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1
+#5 resolve docker.io/library/python:3.12-slim@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1 0.0s done
+#5 DONE 0.1s
+
+#5 [1/4] FROM docker.io/library/python:3.12-slim@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1
+#5 sha256:6912e23eb44595b44dc6d9882b34f305ad6f6e9667cec70b13e5dbc4f8cd97f4 0B / 12.12MB 0.2s
+#5 sha256:bbc5a12237474ec0b23b5051260d56d6436a24d70d9cad961adebe7a037ed813 0B / 249B 0.2s
+#5 sha256:bbc5a12237474ec0b23b5051260d56d6436a24d70d9cad961adebe7a037ed813 249B / 249B 0.3s done
+#5 sha256:75b6a36c64a1cf3520fc4b4aae4739d5caa8a6a05c27835a920a61784c9c32f8 0B / 1.29MB 0.2s
+#5 sha256:6912e23eb44595b44dc6d9882b34f305ad6f6e9667cec70b13e5dbc4f8cd97f4 2.10MB / 12.12MB 0.8s
+#5 sha256:6912e23eb44595b44dc6d9882b34f305ad6f6e9667cec70b13e5dbc4f8cd97f4 3.28MB / 12.12MB 0.9s
+#5 sha256:6912e23eb44595b44dc6d9882b34f305ad6f6e9667cec70b13e5dbc4f8cd97f4 4.19MB / 12.12MB 1.1s
+#5 sha256:75b6a36c64a1cf3520fc4b4aae4739d5caa8a6a05c27835a920a61784c9c32f8 1.29MB / 1.29MB 1.2s done
+#5 sha256:6912e23eb44595b44dc6d9882b34f305ad6f6e9667cec70b13e5dbc4f8cd97f4 7.34MB / 12.12MB 1.4s
+#5 extracting sha256:75b6a36c64a1cf3520fc4b4aae4739d5caa8a6a05c27835a920a61784c9c32f8
+#5 sha256:6912e23eb44595b44dc6d9882b34f305ad6f6e9667cec70b13e5dbc4f8cd97f4 8.39MB / 12.12MB 1.5s
+#5 extracting sha256:75b6a36c64a1cf3520fc4b4aae4739d5caa8a6a05c27835a920a61784c9c32f8 0.3s done
+#5 sha256:6912e23eb44595b44dc6d9882b34f305ad6f6e9667cec70b13e5dbc4f8cd97f4 10.49MB / 12.12MB 1.7s
+#5 sha256:6912e23eb44595b44dc6d9882b34f305ad6f6e9667cec70b13e5dbc4f8cd97f4 11.53MB / 12.12MB 1.8s
+#5 sha256:6912e23eb44595b44dc6d9882b34f305ad6f6e9667cec70b13e5dbc4f8cd97f4 12.12MB / 12.12MB 1.9s done
+#5 extracting sha256:6912e23eb44595b44dc6d9882b34f305ad6f6e9667cec70b13e5dbc4f8cd97f4
+#5 extracting sha256:6912e23eb44595b44dc6d9882b34f305ad6f6e9667cec70b13e5dbc4f8cd97f4 0.9s done
+#5 extracting sha256:bbc5a12237474ec0b23b5051260d56d6436a24d70d9cad961adebe7a037ed813
+#5 extracting sha256:bbc5a12237474ec0b23b5051260d56d6436a24d70d9cad961adebe7a037ed813 0.0s done
+#5 DONE 2.9s
+
+#6 [2/4] WORKDIR /app
+#6 DONE 0.1s
+
+#7 [3/4] RUN pip install prometheus-client
+#7 3.542 Collecting prometheus-client
+#7 3.656   Downloading prometheus_client-0.26.0-py3-none-any.whl.metadata (2.1 kB)
+#7 3.720 Downloading prometheus_client-0.26.0-py3-none-any.whl (64 kB)
+#7 3.781 Installing collected packages: prometheus-client
+#7 3.853 Successfully installed prometheus-client-0.26.0
+#7 3.853 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#7 3.974 
+#7 3.974 [notice] A new release of pip is available: 25.0.1 -> 26.2.1
+#7 3.974 [notice] To update, run: pip install --upgrade pip
+#7 DONE 4.3s
+
+#8 [4/4] COPY delivery_metrics.py .
+#8 DONE 0.1s
+
+#9 exporting to image
+#9 exporting layers
+#9 exporting layers 0.9s done
+#9 exporting manifest sha256:262fc2f027f8e0c26b541f2a3e0b4bc5252ac422d1c9c9006fc348045ff2be56 0.0s done
+#9 exporting config sha256:d712c45130380f6ec4d0bc9d274d71dab04163baedb99c349b47d6060c521cbb 0.0s done
+#9 exporting attestation manifest sha256:1f18188d10d8dd8e7c4dd36322149a8c77ce0781c7a343e3575790e095d90840 0.0s done
+#9 exporting manifest list sha256:60f0b086caed48af9e1ed083591cd3ca658f75c024aacea8fdddbdc5495287be 0.0s done
+#9 naming to docker.io/library/delivery_metrics:latest 0.0s done
+#9 unpacking to docker.io/library/delivery_metrics:latest
+#9 unpacking to docker.io/library/delivery_metrics:latest 0.3s done
+#9 DONE 1.4s
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Run Application)
+[Pipeline] sh
++ docker run -d -p 8000:8000 --name delivery_metrics delivery_metrics
+9346359416f129a5b005ea90e42c877037c2cbb8c436ff4083307acc88265a32
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Run Prometheus & Grafana)
+[Pipeline] sh
++ docker create --name prometheus -p 9090:9090 prom/prometheus
+24b95149428576fb4260f2146cd8d1557d70e02bde8b49fdf37b7eec8a43fd82
++ docker cp prometheus.yml prometheus:/etc/prometheus/prometheus.yml
++ docker cp alert_rules.yml prometheus:/etc/prometheus/alert_rules.yml
++ docker start prometheus
+prometheus
++ docker run -d --name grafana -p 3000:3000 grafana/grafana
+5d3d5efc76e650aff9d3d61c34d1e56d5d74ea8446a78d96ea609b9d688fda29
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
