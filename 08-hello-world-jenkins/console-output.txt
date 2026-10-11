@@ -1,0 +1,25 @@
+﻿Started by user [8mha:////4G8sa2d1Qrxyvlb6HfhRmRLpy5XQHa4rKl0EFebhJRnKAAAAmB+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLgAy2EgYe/dLi1CL9xJTczDwjALcORDPBAAAA[0mAdmin2
+Running as SYSTEM
+Building in workspace /var/jenkins_home/workspace/HelloWorld
+The recommended git tool is: NONE
+No credentials specified
+Cloning the remote Git repository
+Cloning repository https://github.com/ankursaiis23-ctrl/devops-sample-code.git
+ > git init /var/jenkins_home/workspace/HelloWorld # timeout=10
+Fetching upstream changes from https://github.com/ankursaiis23-ctrl/devops-sample-code.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+ > git fetch --tags --force --progress -- https://github.com/ankursaiis23-ctrl/devops-sample-code.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/ankursaiis23-ctrl/devops-sample-code.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision 3fcd458dfe6b87fad5ed0455f1bd359aab7f586a (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 3fcd458dfe6b87fad5ed0455f1bd359aab7f586a # timeout=10
+Commit message: "Add hello-world.sh"
+First time build. Skipping changelog.
+[HelloWorld] $ /bin/sh -xe /tmp/jenkins2076282280725529707.sh
++ sh hello-world.sh
+Hello, Jenkins!
+Finished: SUCCESS
