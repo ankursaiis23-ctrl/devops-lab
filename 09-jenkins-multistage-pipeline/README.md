@@ -24,6 +24,19 @@ Windows 11, Docker Desktop, Jenkins 2.580.1 in the container jenkins7 (Debian 13
 - **Stages shown:** Jenkins shows 7 stages for the base pipeline, not 5, because declarative pipelines add Checkout SCM and Post Actions.
 - **Test Application:** this stage reruns test_app.py. It does not send a request to the running app, so it does not prove the app is up.
 ## Base pipeline
+I started the Jenkins container jenkins7 and created the exercise folder.
+
+![jenkins started](jenkins-started.png)
+
+I created the Flask app, requirements.txt and the unit test in my devops-sample-code clone and pushed them.
+
+![flask files created](flask-files-created.png)
+![flask push](flask-push.png)
+
+Then I added the Jenkinsfile and pushed it.
+
+![jenkinsfile push](jenkinsfile-push.png)
+
 Python was checked and installed in Jenkins first.
 
 ![python check](jenkins-python-check.png)
@@ -45,6 +58,10 @@ flake8 was installed in Jenkins with apt. Running it on the exercise code found 
 ![installed](flake8-installed.png)
 ![errors](flake8-errors.png)
 ![clean](flake8-clean.png)
+
+I pushed the fixed files together with the updated Jenkinsfile.
+
+![code quality push](codequality-push.png)
 
 I added a Code Quality stage after Test that runs `flake8 --exclude=python-app-deploy .`. The exclusion is needed because the workspace still holds an old copy of app.py in python-app-deploy from build 1, and flake8 would fail on that stale copy. Build 2 passed with 8 stages.
 
