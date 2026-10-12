@@ -29,7 +29,8 @@ function kc { minikube -p devops-multinode kubectl -- @args }
 ## Steps
 
 1. Cleaned up any old cluster: `minikube stop` and `minikube delete`.
-2. Started a 3-node cluster: `minikube start --nodes 3 -p devops-multinode`
+2. Started a 3-node cluster: `minikube start --nodes 3 -p devops-multinode --memory 2048 --cpus 2` (2 GB and 2 CPUs per node)
+   - Also enabled the registry add-on (Step 1b of the exercise): `minikube -p devops-multinode addons enable registry`. I ran it at the end, after everything already worked, because `minikube image load` puts the images straight into the nodes. The `registry` pod and one `registry-proxy` pod per node are Running in `kube-system`.
 3. Built the two images:
 ```powershell
    docker build -t product-catalog:latest -f Dockerfile.product .
@@ -212,6 +213,14 @@ This is not an error. Each pod keeps its own in-memory cart, and the service sen
 ### Shopping Cart in the browser
 
 ![Shopping Cart in the browser](ex10-browser-cart.png)
+
+### Registry add-on enabled
+
+![Registry add-on enabled](ex10-registry-addon.png)
+
+### Registry pods Running and the app pods unaffected
+
+![Registry pods and app pods](ex10-registry-pods.png)
 
 ## Cleanup
 
