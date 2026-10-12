@@ -45,6 +45,17 @@ pipeline {
                 '''
             }
         }
+        stage('Docker Deploy') {
+            steps {
+                echo 'Building and running Docker container...'
+                sh '''
+                docker build -t flask-pipeline-app .
+                docker rm -f flask-pipeline-app || true
+                docker run -d --name flask-pipeline-app -p 5001:5000 flask-pipeline-app
+                docker ps --filter name=flask-pipeline-app
+                '''
+            }
+        }
     }
 
     post {
