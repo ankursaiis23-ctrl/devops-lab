@@ -13,6 +13,12 @@ pipeline {
                 sh 'python3 -m unittest discover -s .'
             }
         }
+        stage('Code Quality') {
+            steps {
+                echo 'Running code quality checks...'
+                sh 'flake8 --exclude=python-app-deploy .'
+            }
+        }
         stage('Deploy') {
             steps {
                 echo 'Deploying application...'
