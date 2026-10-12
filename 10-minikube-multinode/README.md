@@ -133,21 +133,85 @@ This is not an error. Each pod keeps its own in-memory cart, and the service sen
 
 ## Screenshots
 
-| Screenshot | What it shows |
-|---|---|
-| `ex10-prechecks.png`, `ex10-cleanup.png` | Prechecks and cleanup |
-| `ex10-files-created.png`, `ex10-images-built.png` | Python files, Dockerfiles and built images |
-| `ex10-cluster-start.png`, `ex10-cluster-nodes.png` | Cluster start and 3 nodes Ready |
-| `ex10-disk-full.png` | C: drive at 0 GB free (cause of the Docker failure) |
-| `ex10-disk-freed.png` | Memory setting (`.wslconfig`) and free disk space after cleanup |
-| `ex10-image-gap-m03.png` | Node m03 missing the product-catalog image |
-| `ex10-images-loaded.png` | Both images present on all 3 nodes |
-| `ex10-yaml-files.png`, `ex10-apply.png` | Manifests and apply output |
-| `ex10-pods-error.png` | Pods in Error (exec format error) |
-| `ex10-pods-distribution.png` | 5 pods Running on different nodes |
-| `ex10-services.png`, `ex10-tunnels.png` | Services and tunnels |
-| `ex10-curl-tests.png`, `ex10-load-balancing.png` | curl tests and load balancing |
-| `ex10-browser-products.png`, `ex10-browser-cart.png` | Both services opened in the browser |
+### Prechecks before starting
+
+![Prechecks before starting](ex10-prechecks.png)
+
+### Cleaning up the old cluster
+
+![Cleaning up the old cluster](ex10-cleanup.png)
+
+### Python files and Dockerfiles created
+
+![Python files and Dockerfiles created](ex10-files-created.png)
+
+### Docker images built
+
+![Docker images built](ex10-images-built.png)
+
+### Starting the 3-node cluster
+
+![Starting the 3-node cluster](ex10-cluster-start.png)
+
+### 3 nodes Ready
+
+![3 nodes Ready](ex10-cluster-nodes.png)
+
+### Problem: C: drive at 0 GB free
+
+![Problem: C: drive at 0 GB free](ex10-disk-full.png)
+
+### Fix: memory setting (.wslconfig) and free disk space after cleanup
+
+![Fix: memory setting (.wslconfig) and free disk space after cleanup](ex10-disk-freed.png)
+
+### Problem: node m03 missing the product-catalog image
+
+![Problem: node m03 missing the product-catalog image](ex10-image-gap-m03.png)
+
+### Both images present on all 3 nodes
+
+![Both images present on all 3 nodes](ex10-images-loaded.png)
+
+### Deployment and service manifests created
+
+![Deployment and service manifests created](ex10-yaml-files.png)
+
+### Applying the manifests
+
+![Applying the manifests](ex10-apply.png)
+
+### Problem: pods in Error (exec format error)
+
+![Problem: pods in Error (exec format error)](ex10-pods-error.png)
+
+### Result: 5 pods Running on different nodes
+
+![Result: 5 pods Running on different nodes](ex10-pods-distribution.png)
+
+### Deployments and NodePort services
+
+![Deployments and NodePort services](ex10-services.png)
+
+### Tunnels to the two services
+
+![Tunnels to the two services](ex10-tunnels.png)
+
+### Testing with curl
+
+![Testing with curl](ex10-curl-tests.png)
+
+### Requests spread across the 3 cart pods
+
+![Requests spread across the 3 cart pods](ex10-load-balancing.png)
+
+### Product Catalog in the browser
+
+![Product Catalog in the browser](ex10-browser-products.png)
+
+### Shopping Cart in the browser
+
+![Shopping Cart in the browser](ex10-browser-cart.png)
 
 ## Cleanup
 
